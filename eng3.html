@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado Módulo 4 - Processos de Software</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #8e44ad; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: #333; }
+        .container { max-width: 850px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary); text-align: center; border-bottom: 4px solid var(--accent); padding-bottom: 10px; }
+        .q-box { margin-bottom: 35px; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+        .q-title { font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 15px; }
+        .items-list { background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 15px; font-style: italic; }
+        .opt { display: block; padding: 12px; border: 1px solid #ddd; margin-bottom: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .opt:hover { background: #f4effa; border-color: var(--accent); }
+        .opt input { margin-right: 12px; }
+        .btn-finish { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1.2em; font-weight: bold; cursor: pointer; }
+        .btn-finish:hover { background: var(--accent); }
+        #result { margin-top: 30px; padding: 20px; display: none; border-radius: 8px; text-align: center; font-size: 1.4em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simulado: Processos de Desenvolvimento</h1>
+
+    <form id="processQuiz">
+        <!-- QUESTÃO 1: ETAPAS DO PROCESSO -->
+        <div class="q-box">
+            <span class="q-title">Questão 1: De acordo com o texto, a etapa de "Modelagem" no processo de desenvolvimento de software possui qual função principal?</span>
+            <div class="options">
+                <label class="opt"><input type="radio" name="q1" value="A"> A) Definir os custos, estratégias de desenvolvimento e o cronograma do projeto.</label>
+                <label class="opt"><input type="radio" name="q1" value="B"> B) Escrever o código-fonte propriamente dito e implementar as funcionalidades.</label>
+                <label class="opt"><input type="radio" name="q1" value="C"> C) Representar o sistema por modelos e diagramas para compreender a estrutura antes da implementação.</label>
+                <label class="opt"><input type="radio" name="q1" value="D"> D) Conversar com clientes para identificar as necessidades e requisitos do sistema.</label>
+                <label class="opt"><input type="radio" name="q1" value="E"> E) Disponibilizar o sistema para os usuários e corrigir erros após o lançamento.</label>
+            </div>
+        </div>
+
+        <!-- QUESTÃO 2: MODELOS DE PROCESSO -->
+        <div class="q-box">
+            <span class="q-title">Questão 2: Sobre os modelos de processo mencionados no Módulo 4, analise as afirmações a seguir:</span>
+            <div class="items-list">
+                I. O modelo cascata é sequencial e rígido, pois uma fase só começa quando a anterior termina.<br>
+                II. O modelo incremental permite entregas parciais do sistema ao longo do projeto.<br>
+                III. As metodologias ágeis, como Scrum, utilizam ciclos curtos chamados iterações.<br>
+                IV. O modelo ágil é o único que permite adaptações rápidas em mudanças de requisitos.
+            </div>
+            <p>É correto o que se afirma em:</p>
+            <div class="options">
+                <label class="opt"><input type="radio" name="q2" value="A"> A) I, II e III apenas.</label>
+                <label class="opt"><input type="radio" name="q2" value="B"> B) II, III e IV apenas.</label>
+                <label class="opt"><input type="radio" name="q2" value="C"> C) I e IV apenas.</label>
+                <label class="opt"><input type="radio" name="q2" value="D"> D) I, II, III e IV.</label>
+                <label class="opt"><input type="radio" name="q2" value="E"> E) III e IV apenas.</label>
+            </div>
+        </div>
+
+        <!-- QUESTÃO 3: ASSERÇÃO (PORQUE) -->
+        <div class="q-box">
+            <span class="q-title">Questão 3: Avalie as asserções a seguir e a relação proposta entre elas:</span>
+            <div class="items-list">
+                I - Seguir um processo estruturado é fundamental para o sucesso de sistemas complexos.
+                <br><strong>PORQUE</strong><br>
+                II - Sem um processo bem definido, o desenvolvimento pode se tornar desorganizado, gerando erros, atrasos e dificuldades na manutenção.
+            </div>
+            <div class="options">
+                <label class="opt"><input type="radio" name="q3" value="A"> A) As asserções I e II são proposições falsas.</label>
+                <label class="opt"><input type="radio" name="q3" value="B"> B) A asserção I é verdadeira, e a II é falsa.</label>
+                <label class="opt"><input type="radio" name="q3" value="C"> C) As asserções I e II são verdadeiras, e a II é uma justificativa correta da I.</label>
+                <label class="opt"><input type="radio" name="q3" value="D"> D) As asserções I e II são verdadeiras, mas a II não justifica a I.</label>
+                <label class="opt"><input type="radio" name="q3" value="E"> E) A asserção I é falsa, e a II é verdadeira.</label>
+            </div>
+        </div>
+
+        <!-- QUESTÃO 4: VERDADEIRO OU FALSO -->
+        <div class="q-box">
+            <span class="q-title">Questão 4: Sobre a importância e os benefícios dos processos de software, classifique como (V) verdadeiro ou (F) falso:</span>
+            <div class="items-list">
+                ( ) Processos de software tornam os projetos mais previsíveis quanto a prazos e custos.<br>
+                ( ) A melhoria da qualidade do software ocorre devido ao seguimento de etapas e testes sistemáticos.<br>
+                ( ) O planejamento é a etapa onde são realizados os testes para garantir o funcionamento correto.<br>
+                ( ) A manutenção serve para adaptar o software a novas necessidades, além de corrigir erros.
+            </div>
+            <div class="options">
+                <label class="opt"><input type="radio" name="q4" value="A"> A) V – V – F – V.</label>
+                <label class="opt"><input type="radio" name="q4" value="B"> B) V – F – F – V.</label>
+                <label class="opt"><input type="radio" name="q4" value="C"> C) F – V – V – F.</label>
+                <label class="opt"><input type="radio" name="q4" value="D"> D) V – V – V – V.</label>
+                <label class="opt"><input type="radio" name="q4" value="E"> E) F – F – F – V.</label>
+            </div>
+        </div>
+
+        <!-- QUESTÃO 5: ETAPAS ESPECÍFICAS -->
+        <div class="q-box">
+            <span class="q-title">Questão 5: De acordo com o texto, qual é a relação correta entre a etapa de "Comunicação" e a Engenharia de Software?</span>
+            <div class="options">
+                <label class="opt"><input type="radio" name="q5" value="A"> A) Ela é a fase final onde o software é entregue ao cliente.</label>
+                <label class="opt"><input type="radio" name="q5" value="B"> B) Ela está ligada à engenharia de requisitos, focando na identificação das funcionalidades.</label>
+                <label class="opt"><input type="radio" name="q5" value="C"> C) Ela serve para representar o sistema através da linguagem UML.</label>
+                <label class="opt"><input type="radio" name="q5" value="D"> D) É a etapa onde ocorre a organização do cronograma e definição de recursos.</label>
+                <label class="opt"><input type="radio" name="q5" value="E"> E) Trata-se da fase de construção do código-fonte pelos programadores.</label>
+            </div>
+        </div>
+
+        <button type="button" class="btn-finish" onclick="checkAnswers()">Finalizar Simulado</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    function checkAnswers() {
+        const correct = { q1: 'C', q2: 'A', q3: 'C', q4: 'A', q5: 'B' };
+        let score = 0;
+        const form = new FormData(document.getElementById('processQuiz'));
+
+        for (let [q, a] of Object.entries(correct)) {
+            if (form.get(q) === a) score++;
+        }
+
+        const resBox = document.getElementById('result');
+        resBox.style.display = 'block';
+        resBox.style.background = score >= 3 ? '#e8f5e9' : '#ffebee';
+        resBox.style.color = score >= 3 ? '#2e7d32' : '#c62828';
+        resBox.innerHTML = `Você acertou ${score} de 5!<br>${score >= 3 ? 'Parabéns! Ótimo entendimento do Módulo 4.' : 'Revise as etapas e modelos de processo.'}`;
+        
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

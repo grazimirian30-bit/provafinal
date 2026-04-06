@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado Completo - Engenharia de Software</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; --text: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { color: var(--primary); text-align: center; border-bottom: 3px solid var(--accent); padding-bottom: 15px; margin-bottom: 30px; }
+        .question-block { margin-bottom: 40px; padding: 20px; border: 1px solid #eee; border-radius: 8px; transition: 0.3s; }
+        .question-block:hover { border-color: var(--accent); background: #fafafa; }
+        .question-text { font-weight: 600; font-size: 1.1em; margin-bottom: 15px; display: block; }
+        .items-list { background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 15px; list-style-type: none; }
+        .options-list { list-style: none; padding: 0; }
+        .option-item { display: flex; align-items: center; background: #fff; border: 1px solid #ddd; margin-bottom: 10px; padding: 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .option-item:hover { background: #eef6fc; border-color: var(--accent); }
+        .option-item input { margin-right: 15px; transform: scale(1.2); cursor: pointer; }
+        .btn-submit { display: block; width: 100%; background: var(--primary); color: white; border: none; padding: 18px; font-size: 1.2em; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        .btn-submit:hover { background: var(--accent); }
+        #result-display { margin-top: 30px; padding: 25px; border-radius: 8px; display: none; text-align: center; font-size: 1.4em; font-weight: bold; }
+        .correct { border-left: 8px solid #27ae60; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simulado de Engenharia de Software</h1>
+
+    <form id="quizForm">
+        <!-- PERGUNTA 1 -->
+        <div class="question-block">
+            <span class="question-text">Pergunta 1: Há diversas denominações para o departamento da empresa que cuida dos sistemas de informação. Dentre às suas atribuições voltadas à Engenharia de Software, qual faz parte deste departamento?</span>
+            <div class="options-list">
+                <label class="option-item"><input type="radio" name="q1" value="A"> A) Serviços de execução de obras de reformas em infraestrutura física e acústica.</label>
+                <label class="option-item"><input type="radio" name="q1" value="B"> B) Gestão do ciclo de vida das aplicações, desde a concepção até a substituição do software.</label>
+                <label class="option-item"><input type="radio" name="q1" value="C"> C) Manutenção física de hardware, como troca de periféricos e fontes de energia.</label>
+                <label class="option-item"><input type="radio" name="q1" value="D"> D) Instalação de mobiliário ergonômico para as equipes de suporte técnico.</label>
+                <label class="option-item"><input type="radio" name="q1" value="E"> E) Treinamento de usuários finais em sistemas operacionais e editores de texto básicos.</label>
+            </div>
+        </div>
+
+        <!-- PERGUNTA 2 -->
+        <div class="question-block">
+            <span class="question-text">Pergunta 2: Considerando as dificuldades da engenharia de software, analise as afirmações a seguir:</span>
+            <div class="items-list">
+                I. A falha na comunicação entre clientes e desenvolvedores resulta em requisitos que não atendem às necessidades reais.<br>
+                II. O aumento da capacidade do hardware eliminou a necessidade de processos rigorosos de manutenção de software.<br>
+                III. A falta de métricas claras dificulta a estimativa precisa de prazos e orçamentos em projetos complexos.<br>
+                IV. O software não sofre desgaste físico, mas sua confiabilidade pode cair devido a manutenções que inserem novos erros.<br>
+                V. A documentação técnica é totalmente dispensável em qualquer metodologia ágil de desenvolvimento.
+            </div>
+            <p>É correto o que se afirma em:</p>
+            <div class="options-list">
+                <label class="option-item"><input type="radio" name="q2" value="A"> A) V, F, V, V, F.</label>
+                <label class="option-item"><input type="radio" name="q2" value="B"> B) F, V, V, F, V.</label>
+                <label class="option-item"><input type="radio" name="q2" value="C"> C) V, V, F, V, F.</label>
+                <label class="option-item"><input type="radio" name="q2" value="D"> D) V, F, F, V, V.</label>
+                <label class="option-item"><input type="radio" name="q2" value="E"> E) F, F, V, V, V.</label>
+            </div>
+        </div>
+
+        <!-- PERGUNTA 3 -->
+        <div class="question-block">
+            <span class="question-text">Pergunta 3: Avalie as asserções a seguir e a relação proposta entre elas:</span>
+            <div class="items-list">
+                I - O uso de modelos de processo (como Scrum ou Cascata) é fundamental para reduzir a incerteza e aumentar a previsibilidade no desenvolvimento.
+                <br><strong>PORQUE</strong><br>
+                II - Processos de software definem "quem faz o quê, quando e como", integrando ferramentas e métodos de trabalho.
+            </div>
+            <p>A respeito dessas asserções, assinale a opção correta:</p>
+            <div class="options-list">
+                <label class="option-item"><input type="radio" name="q3" value="A"> A) As asserções I e II são proposições falsas.</label>
+                <label class="option-item"><input type="radio" name="q3" value="B"> B) A asserção I é verdadeira, e a II é uma proposição falsa.</label>
+                <label class="option-item"><input type="radio" name="q3" value="C"> C) A asserção I é falsa, e a II é uma proposição verdadeira.</label>
+                <label class="option-item"><input type="radio" name="q3" value="D"> D) As asserções I e II são verdadeiras, e a II é uma justificativa correta da I.</label>
+                <label class="option-item"><input type="radio" name="q3" value="E"> E) As asserções I e II são verdadeiras, mas a II não é uma justificativa correta da I.</label>
+            </div>
+        </div>
+
+        <!-- PERGUNTA 4 -->
+        <div class="question-block">
+            <span class="question-text">Pergunta 4: A estratégia de TI deve estar alinhada com o negócio. Considerando tais estratégias, elas devem:</span>
+            <div class="items-list">
+                I. Utilizar o software como diferencial competitivo e redução de tempo de mercado.<br>
+                II. Manter sistemas legados sem atualizações para evitar riscos técnicos.<br>
+                III. Coletar e gerenciar dados para oferecer recursos de análise para a tomada de decisão.<br>
+                IV. Priorizar a escalabilidade para suportar o crescimento das operações.<br>
+                V. Isolar o desenvolvimento das áreas de negócio para manter a pureza técnica.
+            </div>
+            <p>É correto o que se afirma APENAS em:</p>
+            <div class="options-list">
+                <label class="option-item"><input type="radio" name="q4" value="A"> A) I, II e III.</label>
+                <label class="option-item"><input type="radio" name="q4" value="B"> B) III, IV e V.</label>
+                <label class="option-item"><input type="radio" name="q4" value="C"> C) I, III e IV.</label>
+                <label class="option-item"><input type="radio" name="q4" value="D"> D) II, III, IV e V.</label>
+                <label class="option-item"><input type="radio" name="q4" value="E"> E) I, II, III e IV.</label>
+            </div>
+        </div>
+
+        <!-- PERGUNTA 5 -->
+        <div class="question-block">
+            <span class="question-text">Pergunta 5: Os profissionais de Engenharia de Software devem evitar qual das estratégias abaixo?</span>
+            <div class="options-list">
+                <label class="option-item"><input type="radio" name="q5" value="A"> A) Abstração de aspectos importantes e subdivisão de problemas complexos.</label>
+                <label class="option-item"><input type="radio" name="q5" value="B"> B) Adotar uma abordagem sistemática utilizando ferramentas apropriadas.</label>
+                <label class="option-item"><input type="radio" name="q5" value="C"> C) Reutilização de códigos e componentes já testados.</label>
+                <label class="option-item"><input type="radio" name="q5" value="D"> D) Implementação de acoplamento forte entre os módulos do sistema.</label>
+                <label class="option-item"><input type="radio" name="q5" value="E"> E) Modularização para facilitar a manutenção e evolução do software.</label>
+            </div>
+        </div>
+
+        <button type="button" class="btn-submit" onclick="showResult()">Finalizar Simulado e Ver Gabarito</button>
+    </form>
+
+    <div id="result-display"></div>
+</div>
+
+<script>
+    function showResult() {
+        const answers = { q1: 'B', q2: 'A', q3: 'D', q4: 'C', q5: 'D' };
+        let score = 0;
+        const form = document.getElementById('quizForm');
+        const formData = new FormData(form);
+
+        // Verifica acertos
+        for(let key in answers) {
+            if(formData.get(key) === answers[key]) {
+                score++;
+            }
+        }
+
+        const display = document.getElementById('result-display');
+        display.style.display = 'block';
+        display.innerHTML = `Você acertou ${score} de 5 questões!<br><br>`;
+        
+        if(score >= 4) {
+            display.style.background = "#d4edda";
+            display.style.color = "#155724";
+            display.innerHTML += "Excelente desempenho!";
+        } else {
+            display.style.background = "#fff3cd";
+            display.style.color = "#856404";
+            display.innerHTML += "Continue estudando os conceitos fundamentais.";
+        }
+
+        display.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
