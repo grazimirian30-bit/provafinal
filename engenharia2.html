@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado Engenharia: Requisitos e Modelagem</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #e67e22; --correct: #27ae60; --wrong: #c0392b; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: var(--primary); }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; border-bottom: 2px solid var(--accent); padding-bottom: 10px; color: var(--accent); }
+        .question { margin-bottom: 30px; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #fff; }
+        .options label { display: block; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .options label:hover { background: #fff5eb; }
+        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 5px; font-weight: bold; }
+        .correct-style { background: #d4edda; color: #155724; border-left: 5px solid var(--correct); }
+        .wrong-style { background: #f8d7da; color: #721c24; border-left: 5px solid var(--wrong); }
+        .btn-check { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; font-weight: bold; }
+        .diagram-box { background: #f9f9f9; border: 1px dashed #ccc; padding: 10px; margin: 10px 0; text-align: center; font-family: monospace; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simulado Avançado: Requisitos e Arquitetura</h1>
+    <div id="quiz-box"></div>
+    <button class="btn-check" onclick="calculateResult()">Corrigir Simulado</button>
+    <div id="score-board" style="display:none; text-align:center; margin-top:20px; font-size:24px; font-weight: bold;"></div>
+</div>
+
+<script>
+    const db = [
+        {
+            q: "Diferencie Requisitos Funcionais de Não-Funcionais no cenário: 'O sistema deve permitir a geração de boletos em PDF e o tempo de resposta da geração não deve ultrapassar 5 segundos'.",
+            alt: [
+                "Ambos são requisitos funcionais, pois tratam da operação do sistema.",
+                "Gerar boleto é Não-Funcional; o tempo de 5 segundos é Funcional.",
+                "Gerar boleto é Funcional; o tempo de 5 segundos é um Requisito Não-Funcional de Desempenho.",
+                "O tempo de resposta é um requisito de interface, não entrando na classificação de requisitos de software.",
+                "Não há requisitos funcionais no cenário, apenas regras de negócio."
+            ],
+            cor: 2
+        },
+        {
+            q: "Na UML, o Diagrama de Sequência utiliza mensagens para mostrar a interação. O que caracteriza uma 'Mensagem Assíncrona'?",
+            alt: [
+                "O remetente envia a mensagem e deve esperar por uma resposta antes de continuar sua execução.",
+                "O remetente envia a mensagem e continua seu processamento sem esperar por uma resposta imediata.",
+                "É uma mensagem enviada de um objeto para ele mesmo (auto-chamada).",
+                "Representa a criação de um novo objeto no sistema.",
+                "É usada apenas para mensagens de erro enviadas pelo banco de dados."
+            ],
+            cor: 1
+        },
+        {
+            q: "A técnica de 'Elicitação de Requisitos' que consiste em observar o usuário em seu ambiente de trabalho real para entender como as tarefas são executadas é chamada de:",
+            alt: ["Brainstorming.", "Questionário.", "Entrevista Estruturada.", "Etnografia ou Observação.", "JAD (Joint Application Development)."],
+            cor: 3
+        },
+        {
+            q: "No Diagrama de Classes, considere uma classe 'Veículo' e as classes 'Carro' e 'Moto'. Qual o relacionamento correto para modelar que Carro e Moto possuem as características de Veículo?",
+            alt: ["Agregação.", "Composição.", "Generalização / Herança.", "Dependência.", "Associação N-ária."],
+            cor: 2
+        },
+        {
+            q: "Sobre a 'Rastreabilidade de Requisitos', qual a sua principal função no ciclo de vida de um software?",
+            alt: [
+                "Aumentar a velocidade da codificação através de templates.",
+                "Permitir seguir a vida de um requisito, desde sua origem até a implementação e testes, facilitando a análise de impacto em mudanças.",
+                "Garantir que o software seja imune a ataques de hackers.",
+                "Substituir a necessidade de diagramas UML no projeto.",
+                "Documentar apenas os requisitos que foram descartados pelo cliente."
+            ],
+            cor: 1
+        },
+        {
+            q: "Considere um sistema onde o Caso de Uso 'Finalizar Venda' obrigatoriamente aciona o Caso de Uso 'Atualizar Estoque'. Como isso deve ser representado no Diagrama de Caso de Uso?",
+            alt: [
+                "Finalizar Venda -- <<extend>> --> Atualizar Estoque",
+                "Finalizar Venda -- <<include>> --> Atualizar Estoque",
+                "Atualizar Estoque -- <<include>> --> Finalizar Venda",
+                "Uma linha de associação simples entre o Ator e o Atualizar Estoque.",
+                "Representando Atualizar Estoque como um Ator do sistema."
+            ],
+            cor: 1
+        },
+        {
+            q: "O que define um 'Requisito de Domínio'?",
+            alt: [
+                "Um requisito que define a interface visual do sistema.",
+                "Requisitos derivados da área de aplicação do sistema (ex: fórmulas bancárias ou leis de aviação) que refletem as características desse domínio.",
+                "O endereço de internet (URL) onde o sistema será hospedado.",
+                "A quantidade de usuários que o banco de dados suporta.",
+                "Um requisito que o desenvolvedor impõe ao cliente."
+            ],
+            cor: 1
+        },
+        {
+            q: "No Diagrama de Atividades, como se representa o processamento de ações que ocorrem simultaneamente (em paralelo)?",
+            alt: [
+                "Através de uma decisão (diamante).",
+                "Através de barras de sincronização (Fork e Join).",
+                "Utilizando múltiplos atores no mesmo diagrama.",
+                "Conectando as ações diretamente através de setas duplas.",
+                "Representando cada ação em um diagrama separado."
+            ],
+            cor: 1
+        },
+        {
+            q: "A 'Prototipagem Descartável' é uma estratégia de requisitos usada para:",
+            alt: [
+                "Desenvolver o sistema final mais rapidamente.",
+                "Reduzir o custo de licenças de software.",
+                "Esclarecer requisitos obscuros ou difíceis, onde o protótipo é jogado fora após a validação do entendimento.",
+                "Treinar os usuários finais antes da instalação do banco de dados.",
+                "Testar o desempenho do servidor de produção."
+            ],
+            cor: 2
+        },
+        {
+            q: "Na arquitetura de software, o padrão 'MVC' divide a aplicação em:",
+            alt: [
+                "Memory, Variable, Constant.",
+                "Model (Dados), View (Interface), Controller (Lógica).",
+                "Main, Virtual, Core.",
+                "Monitor, Video, Camera.",
+                "Mobile, Version, Cloud."
+            ],
+            cor: 1
+        },
+        {
+            q: "No Diagrama de Classes, o que indica uma multiplicidade '1..1' em ambas as extremidades de uma associação?",
+            alt: [
+                "Que um objeto de uma classe pode estar ligado a muitos da outra.",
+                "Uma relação de um para um (1:1), onde cada instância obrigatoriamente se relaciona com exatamente uma instância da outra classe.",
+                "Que a relação é opcional.",
+                "Que os objetos são duplicados no banco de dados.",
+                "Uma relação de herança múltipla."
+            ],
+            cor: 1
+        },
+        {
+            q: "O documento que serve como contrato técnico entre desenvolvedores e clientes, contendo todos os requisitos do sistema, é o:",
+            alt: ["Backlog do Sprint.", "Documento de Visão.", "Especificação de Requisitos de Software (SRS).", "Diagrama de Classe.", "Manual do Usuário."],
+            cor: 2
+        },
+        {
+            q: "Qual a diferença fundamental entre 'Verificação' e 'Validação' na Engenharia de Software?",
+            alt: [
+                "Não há diferença, são termos sinônimos.",
+                "Verificação checa se o produto está de acordo com as especificações (estamos construindo o produto corretamente?); Validação checa se atende às necessidades do cliente (estamos construindo o produto correto?).",
+                "Verificação é feita pelo cliente; Validação é feita pelo programador.",
+                "Verificação foca em hardware; Validação foca em software.",
+                "Validação ocorre apenas no início do projeto; Verificação apenas no final."
+            ],
+            cor: 1
+        },
+        {
+            q: "No Diagrama de Sequência, como se representa a destruição de um objeto?",
+            alt: [
+                "Com um círculo vermelho.",
+                "Com um 'X' ao final da linha de vida do objeto.",
+                "Simplesmente interrompendo a seta de mensagem.",
+                "Com a palavra reservada <<destroy>>.",
+                "O Diagrama de Sequência não é capaz de representar destruição."
+            ],
+            cor: 1
+        },
+        {
+            q: "O que é um 'Requisito Suplementar'?",
+            alt: [
+                "Um requisito que foi esquecido e adicionado depois.",
+                "Requisitos que não se encaixam bem nos Casos de Uso, como requisitos legais, de segurança ou padrões de conformidade aplicáveis ao sistema como um todo.",
+                "Um comentário no código fonte.",
+                "Uma sugestão de melhoria futura.",
+                "Um requisito que o cliente não quer pagar."
+            ],
+            cor: 1
+        },
+        {
+            q: "Na UML, o relacionamento de 'Dependência' entre duas classes significa que:",
+            alt: [
+                "Uma classe é filha da outra.",
+                "Uma mudança na classe independente pode afetar a classe dependente.",
+                "As duas classes são idênticas.",
+                "A classe dependente contém fisicamente a classe independente.",
+                "Não existe ligação real entre elas."
+            ],
+            cor: 1
+        },
+        {
+            q: "Qual o objetivo do 'Refining' (Refinamento) de Requisitos?",
+            alt: [
+                "Tornar os requisitos mais abstratos e genéricos.",
+                "Transformar requisitos de alto nível em especificações detalhadas e técnicas prontas para a implementação.",
+                "Excluir requisitos para diminuir o preço do software.",
+                "Mudar a linguagem de programação do projeto.",
+                "Aumentar a quantidade de diagramas sem mudar o conteúdo."
+            ],
+            cor: 1
+        },
+        {
+            q: "No contexto de Casos de Uso, o que é um 'Fluxo de Exceção'?",
+            alt: [
+                "O caminho mais comum percorrido pelo usuário.",
+                "Um caminho que lida com situações de erro ou condições que impedem o sucesso do caso de uso (ex: senha inválida).",
+                "O momento em que o sistema é desligado.",
+                "Uma funcionalidade que só o administrador acessa.",
+                "Um erro de lógica que trava o computador."
+            ],
+            cor: 1
+        },
+        {
+            q: "O conceito de 'Manutenibilidade' refere-se à:",
+            alt: [
+                "Facilidade com que um sistema de software pode ser modificado para corrigir falhas, melhorar desempenho ou adaptar a novos requisitos.",
+                "Capacidade do software de nunca precisar de conserto.",
+                "Velocidade de download do instalador.",
+                "Quantidade de cores disponíveis na interface.",
+                "Resistência do servidor a quedas de energia."
+            ],
+            cor: 0
+        },
+        {
+            q: "Um 'Ponto de Extensão' em um Caso de Uso base é:",
+            alt: [
+                "Um local onde o hardware pode ser conectado.",
+                "Um ponto específico dentro do fluxo de um caso de uso onde um comportamento adicional (de um extend) pode ser inserido.",
+                "O final obrigatório de todo diagrama.",
+                "Uma conexão com a internet.",
+                "Um botão físico no gabinete do computador."
+            ],
+            cor: 1
+        }
+    ];
+
+    function loadQuiz() {
+        const box = document.getElementById('quiz-box');
+        db.forEach((item, i) => {
+            box.innerHTML += `
+                <div class="question">
+                    <p><strong>${i+1}.</strong> ${item.q}</p>
+                    <div class="options">
+                        ${item.alt.map((a, j) => `
+                            <label><input type="radio" name="q${i}" value="${j}"> ${a}</label>
+                        `).join('')}
+                    </div>
+                    <div id="f${i}" class="feedback"></div>
+                </div>
+            `;
+        });
+    }
+
+    function calculateResult() {
+        let score = 0;
+        db.forEach((item, i) => {
+            const sel = document.querySelector(`input[name="q${i}"]:checked`);
+            const f = document.getElementById(`f${i}`);
+            f.style.display = "block";
+            if(sel && parseInt(sel.value) === item.cor) {
+                score++;
+                f.innerHTML = "✅ Correto";
+                f.className = "feedback correct-style";
+            } else {
+                f.innerHTML = `❌ Incorreto. A resposta técnica correta é: <br><em>"${item.alt[item.cor]}"</em>`;
+                f.className = "feedback wrong-style";
+            }
+        });
+        const res = document.getElementById('score-board');
+        res.style.display = "block";
+        res.innerHTML = `Desempenho: ${score} de ${db.length} acertos!`;
+        window.scrollTo(0, 0);
+    }
+    loadQuiz();
+</script>
+</body>
+</html>
