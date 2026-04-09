@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado de Ética e Sociologia</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --bg: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { text-align: center; color: var(--primary); }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question p { font-weight: bold; margin-bottom: 15px; }
+
+        .options label {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .options label:hover { background: #f0f0f0; }
+
+        .options input { margin-right: 10px; }
+
+        /* Esconder gabarito inicialmente */
+        .feedback {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .correct-bg { background-color: #d4edda; color: #155724; }
+        .wrong-bg { background-color: #f8d7da; color: #721c24; }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover { background-color: #2980b9; }
+
+        #result-summary {
+            display: none;
+            text-align: center;
+            font-size: 22px;
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simulado de Ética e Sociologia</h1>
+    <form id="quizForm">
+        <!-- As 20 questões serão inseridas aqui pelo JS para o código ficar mais limpo -->
+        <div id="questions-container"></div>
+
+        <div class="btn-container">
+            <button type="button" onclick="checkAnswers()">Ver Resultado</button>
+        </div>
+    </form>
+
+    <div id="result-summary"></div>
+</div>
+
+<script>
+    const questionsData = [
+        { q: "Sobre o conceito de Ética Discursiva de Jürgen Habermas, assinale a alternativa correta:", options: ["O consenso deve ser imposto pelo Estado.", "A ética baseia-se na vitória do argumento do mais forte.", "A validade de uma norma moral depende do consenso em diálogo livre.", "A comunicação serve apenas para transmitir ordens.", "O diálogo é irrelevante."], correct: 2 },
+        { q: "O conceito de 'Racismo Estrutural' implica que:", options: ["É uma falha individual.", "É um componente orgânico que constitui as relações sociais.", "Deixará de existir apenas com educação infantil.", "A estrutura brasileira é naturalmente democrática.", "Apenas instituições públicas são racistas."], correct: 1 },
+        { q: "O Desenvolvimento Sustentável significa:", options: ["Priorizar crescimento imediato.", "Explorar tudo agora para o futuro.", "Suprir necessidades atuais sem comprometer as futuras.", "Interromper totalmente a indústria.", "Substituir o social pelo ambiental."], correct: 2 },
+        { q: "Na obra de Hannah Arendt, a esfera pública é onde:", options: ["Busca-se apenas sobrevivência.", "A vida privada é exposta.", "Ocorre a ação política e o discurso plural.", "O governo decide sozinho.", "A economia é o único tema."], correct: 2 },
+        { q: "Sobre o Hedonismo de Epicuro: I-Busca satisfação sensorial imediata. PORQUE II-A felicidade é a ataraxia.", options: ["As duas são verdadeiras e a II justifica a I.", "A I é verdadeira e a II é falsa.", "A I é falsa e a II é verdadeira.", "As duas são falsas.", "A II não justifica a I."], correct: 2 },
+        { q: "O conceito de Interseccionalidade entende que:", options: ["Desigualdades operam isoladas.", "Opressões de raça e gênero podem se combinar.", "Meritocracia é o único fator.", "Gênero é a única barreira.", "Classe é o único fator no Brasil."], correct: 1 },
+        { q: "Sobre o Contratualismo de Hobbes:", options: ["O homem é bom por natureza.", "O Estado deve ser fraco.", "O contrato garante segurança contra o estado de guerra.", "Democracia direta é a única via.", "Leis são desnecessárias com religião."], correct: 2 },
+        { q: "A 'Inclusão' diferencia-se da 'Diversidade' pois:", options: ["Diversidade é presença; Inclusão é voz e participação.", "Inclusão é apenas cumprir cotas.", "Diversidade é marketing; Inclusão é lei.", "Não há diferença.", "Inclusão foca apenas em PcD."], correct: 0 },
+        { q: "A 'Ética do Cuidado' critica:", options: ["Excesso de atenção a idosos.", "Desvalorização das tarefas de cuidado (geralmente femininas).", "Homens em tarefas domésticas.", "Tecnologia na medicina.", "Hospitais públicos."], correct: 1 },
+        { q: "Premissa do Relativismo Cultural:", options: ["Culturas superiores ditam normas.", "Culturas devem ser entendidas pelos seus próprios valores.", "Não precisamos de Direitos Humanos.", "O Ocidente é o único modelo.", "Cultura é genética."], correct: 1 },
+        { q: "A 'Uberização' do trabalho indica:", options: ["Pleno emprego digital.", "Precarização e ausência de vínculos formais.", "Substituição total por robôs.", "Melhoria na segurança do trabalhador.", "Fim da necessidade de estudo."], correct: 1 },
+        { q: "Na filosofia de Tiburi, 'antipoética' é:", options: ["Poemas sem rima.", "Vida que produz morte e silenciamento.", "Estudo acadêmico.", "Impossibilidade digital.", "Uso de tecnologia na arte."], correct: 1 },
+        { q: "Ações Afirmativas fundamentam-se na:", options: ["Igualdade formal.", "Igualdade material (Equidade).", "Meritocracia pura.", "Segregação social.", "Caridade."], correct: 1 },
+        { q: "Princípio básico da Ética Utilitarista:", options: ["Agir conforme o dever apenas.", "Maior felicidade para o maior número.", "Prazer individual acima de tudo.", "Seguir leis religiosas.", "Lucro financeiro é o único critério."], correct: 1 },
+        { q: "Cidadania Ambiental envolve:", options: ["Direito de poluir pagando.", "Responsabilidade de proteção como exercício cidadão.", "Obrigação exclusiva do Estado.", "Isolamento humano da natureza.", "Negação de mudanças climáticas."], correct: 1 },
+        { q: "Sobre Veganismo: I-Busca abolir exploração animal. PORQUE II-Baseia-se na senciência.", options: ["As duas são falsas.", "A I é verdadeira, II é falsa.", "As duas são verdadeiras e a II justifica a I.", "Não há relação entre elas.", "A II é verdadeira."], correct: 2 },
+        { q: "O conceito de 'Democracia Racial' é criticado porque:", options: ["O Brasil nunca teve escravidão.", "Mascara desigualdades e o racismo real.", "Todos possuem mesmas oportunidades.", "Racismo é apenas classe social.", "A constituição de 88 resolveu tudo."], correct: 1 },
+        { q: "O Fundamentalismo caracteriza-se por:", options: ["Aceitar todas opiniões.", "Adesão rígida a dogmas e intransigência.", "Estudo da física.", "Busca por consensos.", "Desapego a valores."], correct: 1 },
+        { q: "A crise climática como 'Externalidade Negativa' significa:", options: ["Sem relação com economia.", "Custos ambientais coletivos e lucro privado.", "Poluição é desenvolvimento.", "Natureza se recupera sem custos.", "Apenas países pobres sofrem."], correct: 1 },
+        { q: "O Imperativo Categórico de Kant é:", options: ["Olho por olho.", "Aja para que sua regra vire lei universal.", "Os fins justificam os meios.", "Siga instintos.", "Obedeça aos mais fortes."], correct: 1 }
+    ];
+
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        questionsData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question';
+            qDiv.innerHTML = `
+                <p>${index + 1}. ${item.q}</p>
+                <div class="options">
+                    ${item.options.map((opt, i) => `
+                        <label>
+                            <input type="radio" name="q${index}" value="${i}">
+                            ${opt}
+                        </label>
+                    `).join('')}
+                </div>
+                <div id="feedback${index}" class="feedback"></div>
+            `;
+            container.appendChild(qDiv);
+        });
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        questionsData.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const feedback = document.getElementById(`feedback${index}`);
+            feedback.style.display = 'block';
+
+            if (selected && parseInt(selected.value) === item.correct) {
+                score++;
+                feedback.innerHTML = "✅ Correto!";
+                feedback.className = "feedback correct-bg";
+            } else {
+                feedback.innerHTML = `❌ Errado. A resposta correta era: ${item.options[item.correct]}`;
+                feedback.className = "feedback wrong-bg";
+            }
+        });
+
+        const summary = document.getElementById('result-summary');
+        summary.style.display = 'block';
+        summary.innerHTML = `Você acertou ${score} de ${questionsData.length} questões!`;
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    renderQuestions();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado Avançado: UML e Engenharia de Software</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #2980b9; --correct: #27ae60; --wrong: #c0392b; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: var(--primary); }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        .question { margin-bottom: 30px; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #fff; }
+        .diagram { text-align: center; margin: 15px 0; background: #f9f9f9; padding: 15px; border: 1px solid #ccc; font-style: italic; }
+        .options label { display: block; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .options label:hover { background: #f0f7ff; }
+        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 5px; font-weight: bold; }
+        .correct-style { background: #d4edda; color: #155724; border-left: 5px solid var(--correct); }
+        .wrong-style { background: #f8d7da; color: #721c24; border-left: 5px solid var(--wrong); }
+        .btn-check { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simulado de Engenharia e Modelagem (Nível Superior)</h1>
+    <div id="quiz-box"></div>
+    <button class="btn-check" onclick="calculateResult()">Finalizar e Corrigir Simulado</button>
+    <div id="score-board" style="display:none; text-align:center; margin-top:20px; font-size:24px; font-weight: bold;"></div>
+</div>
+
+<script>
+    const db = [
+        { 
+            q: "Analise o diagrama de Caso de Uso e a relação proposta: O Caso de Uso 'Lançar Nota' possui uma seta pontilhada apontando para 'Validar CPF' com o estereótipo <<include>>.", 
+            alt: [
+                "A validação do CPF é um comportamento opcional, dependendo de uma condição lógica.",
+                "O fluxo 'Lançar Nota' não pode ser concluído sem a execução obrigatória de 'Validar CPF'.",
+                "A relação indica que 'Validar CPF' é uma especialização (herança) de 'Lançar Nota'.",
+                "O 'Validar CPF' estende o caso base apenas em situações de erro ou exceção.",
+                "A relação está invertida, pois o include deve partir do caso de uso mais simples."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "No contexto de Diagramas de Classes, considere uma relação de 'Composição' entre a classe 'Universidade' e a classe 'Departamento'. Qual a implicação lógica desta modelagem?", 
+            alt: [
+                "Departamentos podem existir de forma independente se a Universidade for extinta.",
+                "Trata-se de uma relação de agregação por referência, onde o tempo de vida não é compartilhado.",
+                "A Universidade é proprietária dos Departamentos; se a Universidade for destruída, os Departamentos deixam de existir.",
+                "A relação indica que um Departamento pode pertencer a múltiplas Universidades simultaneamente.",
+                "A Composição é representada por um losango vazio na extremidade da classe Universidade."
+            ], 
+            cor: 2 
+        },
+        { 
+            q: "Sobre a Engenharia de Software e a crise do software, analise as asserções: I. Manter um software legado sob encomenda frequentemente excede o custo de seu desenvolvimento original. PORQUE II. A falta de documentação adequada e a evolução dos requisitos tornam a manutenção um processo complexo e arriscado.", 
+            alt: [
+                "As asserções I e II são verdadeiras, e a II é uma justificativa correta da I.",
+                "As asserções I e II são verdadeiras, mas a II não é uma justificativa da I.",
+                "A asserção I é verdadeira e a II é falsa.",
+                "A asserção I é falsa e a II é verdadeira.",
+                "Ambas as asserções são falsas."
+            ], 
+            cor: 0 
+        },
+        { 
+            q: "O Diagrama de Sequência é essencial para modelar o comportamento dinâmico. Qual elemento descreve o período de tempo durante o qual um objeto está executando uma ação?", 
+            alt: ["Linha de vida (Lifeline).", "Mensagem assíncrona.", "Foco de controle ou Barra de ativação.", "Ator externo.", "Fragmento combinado (alt)."], 
+            cor: 2 
+        },
+        { 
+            q: "Dentre os modelos de processo de software, o modelo 'Cascata' (Waterfall) é frequentemente criticado em projetos modernos por:", 
+            alt: [
+                "Ser excessivamente flexível diante de mudanças de requisitos no meio do projeto.",
+                "Sua natureza iterativa que gera muitas versões do software em curto tempo.",
+                "Dificuldade em acomodar mudanças após o processo estar em andamento, devido às fases rígidas e sequenciais.",
+                "Não exigir documentação em nenhuma das fases do ciclo de vida.",
+                "Ser um modelo focado exclusivamente em metodologias ágeis como o Scrum."
+            ], 
+            cor: 2 
+        },
+        { 
+            q: "Na UML, o que caracteriza uma 'Generalização'?", 
+            alt: [
+                "A criação de instâncias de objetos a partir de uma classe concreta.",
+                "Um relacionamento taxonômico entre um elemento mais geral e um elemento mais específico.",
+                "A inclusão de uma funcionalidade externa em um caso de uso base.",
+                "A representação de como os componentes de hardware são implantados.",
+                "O agrupamento de classes em pacotes de acordo com sua visibilidade."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "Considere a multiplicidade '1..*' em uma extremidade de uma associação entre 'Autor' e 'Livro'. Isso indica que:", 
+            alt: [
+                "Um livro pode não possuir autores cadastrados.",
+                "Cada autor deve estar obrigatoriamente vinculado a, pelo menos, um livro.",
+                "Um autor pode ter no máximo um livro vinculado.",
+                "A relação é de composição obrigatória e física.",
+                "O sistema deve aceitar apenas um autor por livro."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "Qual diagrama UML é utilizado para modelar os aspectos físicos de um sistema, mostrando os nós de processamento e os componentes que residem neles?", 
+            alt: ["Diagrama de Componentes.", "Diagrama de Objetos.", "Diagrama de Implantação (Deployment).", "Diagrama de Atividades.", "Diagrama de Comunicação."], 
+            cor: 2 
+        },
+        { 
+            q: "Sobre a visibilidade de atributos em uma classe UML, o modificador representado pelo símbolo '#' (protegido) garante que:", 
+            alt: [
+                "Qualquer classe do sistema possa acessar o atributo.",
+                "Apenas a própria classe e suas subclasses tenham acesso ao atributo.",
+                "Apenas a própria classe tenha acesso, impedindo o acesso até por subclasses.",
+                "O atributo seja constante e não possa ser alterado em tempo de execução.",
+                "O atributo seja visível apenas para usuários com perfil de administrador."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "A Engenharia de Requisitos divide requisitos em Funcionais e Não-Funcionais. Qual dos seguintes é um requisito NÃO-FUNCIONAL?", 
+            alt: [
+                "O sistema deve permitir ao usuário emitir um relatório de vendas mensal.",
+                "O sistema deve validar o login do usuário através de biometria.",
+                "O sistema deve ser capaz de processar 1000 transações por segundo.",
+                "O sistema deve permitir a exclusão de registros de clientes inativos.",
+                "O sistema deve enviar um e-mail de confirmação após cada compra."
+            ], 
+            cor: 2 
+        },
+        { 
+            q: "No Diagrama de Atividades, o conceito de 'Fork' (bifurcação) é utilizado para:", 
+            alt: [
+                "Representar uma decisão condicional onde apenas um caminho é escolhido.",
+                "Indicar o início de fluxos de execução paralelos ou simultâneos.",
+                "Finalizar todos os processos ativos no diagrama.",
+                "Conectar o sistema a um banco de dados externo.",
+                "Sinalizar uma espera por um evento externo do ator."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "O que define a 'Coesão' de um módulo de software dentro da Engenharia de Software?", 
+            alt: [
+                "O grau de dependência entre um módulo e outro.",
+                "A força da relação funcional entre as tarefas dentro de um único módulo.",
+                "A quantidade de linhas de código que um módulo possui.",
+                "A capacidade do módulo de se conectar a diferentes bancos de dados.",
+                "O custo total de desenvolvimento do módulo em relação ao projeto."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "O Diagrama de Estados (State Machine) é melhor aplicado para:", 
+            alt: [
+                "Modelar a estrutura organizacional da empresa cliente.",
+                "Descrever o comportamento de um objeto que muda de estado em resposta a eventos.",
+                "Listar os requisitos de hardware para a instalação do software.",
+                "Representar a interação entre diferentes departamentos de TI.",
+                "Substituir o diagrama de casos de uso em projetos de pequeno porte."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "Na UML, o estereótipo <<extend>> em Casos de Uso é acompanhado frequentemente por um 'Ponto de Extensão'. Isso significa que:", 
+            alt: [
+                "O caso de uso estendido é parte vital e inseparável do caso base.",
+                "O comportamento adicional só é inserido no caso base se uma condição específica for atendida no ponto definido.",
+                "O ator deve obrigatoriamente realizar as duas tarefas ao mesmo tempo.",
+                "O diagrama está representando uma herança de interfaces de usuário.",
+                "A relação serve para reduzir o número de atores no sistema."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "Qual técnica da Engenharia de Software foca na reutilização de soluções já testadas para problemas recorrentes de design?", 
+            alt: ["Metodologias Ágeis.", "Padrões de Projeto (Design Patterns).", "Refatoração de Código.", "Testes Unitários.", "Engenharia Reversa."], 
+            cor: 1 
+        },
+        { 
+            q: "No Diagrama de Classes, a 'Agregação' (losango vazio) é considerada uma relação do tipo 'todo-parte'. Nela, se o objeto 'todo' for destruído:", 
+            alt: [
+                "O sistema deve entrar em estado de exceção imediatamente.",
+                "As partes constituintes podem continuar a existir independentemente do todo.",
+                "As partes são deletadas automaticamente pelo coletor de lixo da linguagem.",
+                "A relação se transforma automaticamente em uma herança.",
+                "O diagrama torna-se semanticamente incorreto."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "O 'Acoplamento' deve ser evitado em níveis altos na Engenharia de Software porque:", 
+            alt: [
+                "Torna o sistema muito rápido, impedindo o debug.",
+                "Mudar um módulo pode causar efeitos colaterais inesperados em outros módulos dependentes.",
+                "Facilita excessivamente a manutenção, reduzindo o faturamento da empresa.",
+                "Diminui a quantidade de classes necessárias para o projeto.",
+                "Impede o uso de diagramas UML no processo de modelagem."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "A etapa de 'Validação' de requisitos visa garantir que:", 
+            alt: [
+                "O código foi escrito sem erros de sintaxe.",
+                "Os requisitos definidos realmente atendem às necessidades e expectativas do cliente.",
+                "O sistema roda no servidor do desenvolvedor.",
+                "O banco de dados possui integridade referencial.",
+                "O projeto não ultrapassou o orçamento previsto."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "Uma classe 'Interface' na UML difere de uma classe comum por:", 
+            alt: [
+                "Possuir apenas atributos privados e nenhum método.",
+                "Definir um contrato de comportamento (assinaturas de métodos) sem fornecer a implementação.",
+                "Ser a única classe que pode ser instanciada no sistema.",
+                "Representar diretamente o hardware do sistema.",
+                "Não permitir que outras classes a utilizem como referência."
+            ], 
+            cor: 1 
+        },
+        { 
+            q: "O modelo de processo 'Prototipação' é mais indicado quando:", 
+            alt: [
+                "Os requisitos estão perfeitamente definidos e estáveis desde o início.",
+                "O cliente tem dificuldades em definir claramente os requisitos e precisa de uma visão visual para validar ideias.",
+                "O projeto é de missão crítica e não permite nenhum tipo de erro visual.",
+                "Não há recursos financeiros para realizar a fase de testes.",
+                "A equipe de desenvolvimento domina todas as tecnologias envolvidas no projeto."
+            ], 
+            cor: 1 
+        }
+    ];
+
+    function loadQuiz() {
+        const box = document.getElementById('quiz-box');
+        db.forEach((item, i) => {
+            box.innerHTML += `
+                <div class="question">
+                    <p><strong>Questão ${i+1}:</strong> ${item.q}</p>
+                    <div class="options">
+                        ${item.alt.map((a, j) => `
+                            <label><input type="radio" name="q${i}" value="${j}"> ${a}</label>
+                        `).join('')}
+                    </div>
+                    <div id="f${i}" class="feedback"></div>
+                </div>
+            `;
+        });
+    }
+
+    function calculateResult() {
+        let score = 0;
+        db.forEach((item, i) => {
+            const sel = document.querySelector(`input[name="q${i}"]:checked`);
+            const f = document.getElementById(`f${i}`);
+            f.style.display = "block";
+            if(sel && parseInt(sel.value) === item.cor) {
+                score++;
+                f.innerHTML = "✅ RESPOSTA CORRETA";
+                f.className = "feedback correct-style";
+            } else {
+                f.innerHTML = `❌ RESPOSTA INCORRETA. A alternativa certa é: <br><em>"${item.alt[item.cor]}"</em>`;
+                f.className = "feedback wrong-style";
+            }
+        });
+        const res = document.getElementById('score-board');
+        res.style.display = "block";
+        res.innerHTML = `Desempenho: ${score} de ${db.length} acertos (${(score/db.length*100).toFixed(1)}%)`;
+        window.scrollTo(0, 0);
+    }
+    loadQuiz();
+</script>
+</body>
+</html>
