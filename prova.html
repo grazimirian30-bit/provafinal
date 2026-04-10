@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Atividade Quinzena 4 - Engenharia de Software (Completa)</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #2980b9; --correct: #27ae60; --wrong: #c0392b; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: var(--primary); line-height: 1.6; }
+        .container { max-width: 850px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: var(--accent); border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .question { margin-bottom: 40px; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #fff; }
+        .enunciado { background: #f8f9fa; padding: 15px; border-left: 4px solid var(--accent); margin-bottom: 15px; font-style: italic; font-size: 0.95rem; color: #555; }
+        .pergunta { font-weight: bold; font-size: 1.05rem; display: block; margin-bottom: 15px; }
+        .options label { display: block; padding: 12px; margin: 8px 0; background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .options label:hover { background: #f0f0f0; }
+        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 6px; font-weight: bold; }
+        .correct-style { background: #d4edda; color: #155724; border-left: 5px solid var(--correct); }
+        .wrong-style { background: #f8d7da; color: #721c24; border-left: 5px solid var(--wrong); }
+        .commentary { display: block; margin-top: 10px; font-weight: normal; font-size: 0.9rem; color: #333; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 5px; }
+        .btn-check { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simulado: Revisão de Engenharia de Software</h1>
+    <div id="quiz-container"></div>
+    <button class="btn-check" onclick="processQuiz()">Corrigir e Ver Gabarito</button>
+</div>
+
+<script>
+    const fullData = [
+        {
+            enunciado: "O Diagrama de Caso de Uso é um diagrama comportamental que representa as interações entre o usuário e o sistema e é utilizado para modelar a estrutura do software.",
+            pergunta: "Analisando o diagrama da figura abaixo (representação textual), o que podemos afirmar sobre a relação 'include'?",
+            options: [
+                "A relação 'include' foi usada para mostrar que os casos de uso 'validar produto' e 'atualizar estoque' são uma extensão do caso de uso 'lançar compra' e é obrigatório para o usuário.",
+                "A relação 'include' foi usada para mostrar que 'lançar compra' poderá ter continuidade em um dos casos de uso ligados.",
+                "A relação 'include' é usada para mostrar que o caso de uso 'lançar compra' inclui a execução de outros dois casos de uso, mas não é obrigatório para o usuário.",
+                "A relação 'include' foi usada para mostrar que o caso de uso 'atualizar estoque' é uma generalização de outro caso de uso.",
+                "A relação 'include' foi usada para mostrar que um dos casos de uso ligados é opcional para o usuário."
+            ],
+            correct: 2,
+            obs: "O 'include' automatiza funções. Quando o usuário lança a compra, o sistema valida o produto e atualiza o estoque obrigatoriamente, sem que o usuário precise clicar nesses botões separadamente."
+        },
+        {
+            enunciado: "Os diagramas de classes são uma parte crucial da modelagem orientada a objetos, usados no processo de desenvolvimento de software para representar a estrutura estática de um sistema. Eles mostram as classes e interfaces, assim como as associações, heranças, e multiplicidades entre elas. Usar um diagrama de classes pode ajudar a esclarecer as responsabilidades das classes e como elas interagem umas com as outras.",
+            pergunta: "Em um diagrama de classes, qual dos seguintes aspectos é melhor representado para explicar a relação entre diferentes classes?",
+            options: [
+                "A comunicação assíncrona entre sistemas distribuídos.",
+                "Os atributos e comportamentos individuais de cada classe.",
+                "A interação em tempo real entre as instâncias de objetos.",
+                "O design visual e layout da interface do usuário.",
+                "A sequência de execução do programa."
+            ],
+            correct: 1,
+            obs: "A estrutura estática foca na definição (atributos e métodos). Sequência e tempo real pertencem aos diagramas de Sequência/Atividades."
+        },
+        {
+            enunciado: "O Diagrama de Caso de Uso é uma ferramenta importante para a modelagem de sistemas. Ele serve como uma ponte de comunicação entre as partes interessadas (stakeholders).",
+            pergunta: "Indique se as seguintes afirmações são verdadeiras (V) ou falsas (F): <br><br> ( ) O Diagrama de Caso de Uso é usado para descrever os requisitos do sistema. <br> ( ) O Diagrama de Caso de Uso representa a arquitetura do sistema. <br> ( ) Os atores no Diagrama de Caso de Uso representam apenas usuários humanos. <br> ( ) Um caso de uso pode ser utilizado por apenas um ator. <br> ( ) O Diagrama de Caso de Uso é uma ferramenta útil para comunicação entre os stakeholders do projeto.",
+            options: [
+                "F – F – F – V – V",
+                "V – F – F – V – V",
+                "V – F – F – F – V",
+                "V – V – F – F – V",
+                "V – V – F – F – F"
+            ],
+            correct: 2,
+            obs: "Gabarito Correto: V-F-F-F-V. Casos de uso descrevem requisitos funcionais (V). Não mostram arquitetura física (F). Atores podem ser sistemas externos (F). Casos de uso podem ter múltiplos atores (F)."
+        },
+        {
+            enunciado: "Utilizar modelagem baseada em Casos de Uso permite a fácil compreensão pelos usuários, pois permite discussão entre as partes interessadas e um meio para acompanhar o progresso dos trabalhos.",
+            pergunta: "Analise as afirmações a seguir, classificando-as como (V) verdadeiras ou (F) falsas: <br><br> ( ) Técnica que permite descrever as interações de forma clara. <br> ( ) Foca detalhadamente na implementação técnica (SQL, Código). <br> ( ) Útil apenas na fase de desenvolvimento (não antes). <br> ( ) Fornece visão gráfica das interações entre atores e casos de uso. <br> ( ) A especificação textual não é necessária.",
+            options: [
+                "V – F – F – V- V",
+                "V – F – F – V- F",
+                "V – V – F – V- F",
+                "F – V – F – V- F",
+                "V – F – V – V- F"
+            ],
+            correct: 1,
+            obs: "Gabarito Correto: V-F-F-V-F. O caso de uso deve ser independente de tecnologia (F). Ele deve ser usado na fase de análise (F). A documentação textual é obrigatória para explicar o que o desenho não mostra (F)."
+        }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz-container');
+        fullData.forEach((item, index) => {
+            container.innerHTML += `
+                <div class="question">
+                    <div class="enunciado">${item.enunciado}</div>
+                    <span class="pergunta">${item.pergunta}</span>
+                    <div class="options">
+                        ${item.options.map((opt, i) => `
+                            <label><input type="radio" name="q${index}" value="${i}"> ${opt}</label>
+                        `).join('')}
+                    </div>
+                    <div id="fb${index}" class="feedback"></div>
+                </div>
+            `;
+        });
+    }
+
+    function processQuiz() {
+        fullData.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const fb = document.getElementById(`fb${index}`);
+            fb.style.display = "block";
+            if (selected && parseInt(selected.value) === item.correct) {
+                fb.innerHTML = "✅ Correto! <span class='commentary'><strong>Comentário:</strong> " + item.obs + "</span>";
+                fb.className = "feedback correct-style";
+            } else {
+                fb.innerHTML = "❌ Incorreto. <span class='commentary'><strong>Justificativa:</strong> " + item.obs + "</span>";
+                fb.className = "feedback wrong-style";
+            }
+        });
+    }
+
+    renderQuiz();
+</script>
+</body>
+</html>
